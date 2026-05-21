@@ -1,4 +1,5 @@
 import os
+import pytest
 from unittest.mock import patch
 
 
@@ -21,3 +22,9 @@ def test_settings_read_from_env():
         s = config.Settings()
     assert s.IMAGE_API_KEY == "test-key-123"
     assert s.PORT == 9000
+
+
+def test_invalid_transport_raises():
+    with pytest.raises(Exception):
+        from config import Settings
+        Settings(TRANSPORT="invalid")
