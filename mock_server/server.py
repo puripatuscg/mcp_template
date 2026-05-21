@@ -1,7 +1,7 @@
 import math
 import statistics
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 app = FastAPI(title="Math Platform Mock")
 
@@ -11,9 +11,9 @@ class StatsRequest(BaseModel):
 
 
 class AmortizeRequest(BaseModel):
-    principal: float
+    principal: float = Field(gt=0)
     annual_rate: float
-    months: int
+    months: int = Field(gt=0)
 
 
 @app.post("/stats")

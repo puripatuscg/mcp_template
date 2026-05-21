@@ -56,3 +56,8 @@ def test_convert_units_unknown_from_unit_raises():
 def test_convert_units_unknown_to_unit_raises():
     with pytest.raises(ValueError, match="Unknown unit"):
         convert_units(1.0, "m", "furlongs")
+
+
+def test_compound_interest_zero_n_raises():
+    with pytest.raises(ValueError, match="n must be at least 1"):
+        compound_interest(10000, 0.05, 5, n=0)

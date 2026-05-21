@@ -1,3 +1,5 @@
+import json
+
 import pytest
 from pytest_httpx import HTTPXMock
 from tools.api_tools.math_platform import calculate_statistics, amortize_loan
@@ -22,7 +24,6 @@ async def test_calculate_statistics_sends_correct_payload(httpx_mock: HTTPXMock)
     )
     result = await calculate_statistics([7.0])
     requests = httpx_mock.get_requests()
-    import json
     body = json.loads(requests[0].content)
     assert body == {"numbers": [7.0]}
 
@@ -52,6 +53,15 @@ async def test_amortize_loan_sends_correct_payload(httpx_mock: HTTPXMock):
     )
     await amortize_loan(10000.0, 0.05, 12)
     requests = httpx_mock.get_requests()
-    import json
     body = json.loads(requests[0].content)
     assert body == {"principal": 10000.0, "annual_rate": 0.05, "months": 12}
+
+
+async def test_calculate_statistics_raises_on_http_error(httpx_mock: HTTPXMock):
+    httpx_mock.add_response(
+        method="POST",
+        url="http://localhost:8080/stats",
+        status_code=500,
+    )
+    with pytest.raises(Exception):
+        await calculate_statistics([1.0, 2.0, 3.0])

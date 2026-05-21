@@ -38,6 +38,8 @@ def compound_interest(principal: float, rate: float, years: int, n: int = 12) ->
         years: Number of years
         n: Compounding periods per year (default 12 = monthly)
     """
+    if n <= 0:
+        raise ValueError("n must be at least 1")
     amount = principal * (1 + rate / n) ** (n * years)
     return {
         "principal": principal,
