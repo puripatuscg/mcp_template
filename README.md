@@ -1,6 +1,6 @@
-# Image Platform MCP Server Template
+# MCP Server Template
 
-MCP server template สำหรับทีม data science ที่ทำ image platform
+MCP server template สำหรับทีม data science — พร้อม image tools และ math tools เป็นตัวอย่าง
 
 ## Quickstart
 
@@ -27,7 +27,7 @@ python server.py
 ```json
 {
   "mcpServers": {
-    "image-platform": {
+    "mcp-template": {
       "command": "python",
       "args": ["/absolute/path/to/mcp_template/server.py"],
       "env": {
@@ -41,12 +41,23 @@ python server.py
 
 ## Available Tools
 
+### Image Tools
+
 | Tool | Type | Description |
 |------|------|-------------|
 | `get_image_metadata` | Function | Get width, height, format ของ local image |
 | `resize_image` | Function | Resize และ save local image |
 | `detect_objects` | REST API | Detect objects ผ่าน image platform API |
 | `classify_image` | REST API | Classify image ผ่าน image platform API |
+
+### Math Tools
+
+| Tool | Type | Description |
+|------|------|-------------|
+| `compound_interest` | Function | คำนวณดอกเบี้ยทบต้นและ breakdown สรุปยอด |
+| `convert_units` | Function | แปลงหน่วย length, weight, temperature |
+| `calculate_statistics` | REST API | คำนวณ descriptive statistics ผ่าน API |
+| `amortize_loan` | REST API | คำนวณตาราง amortization ของสินเชื่อ |
 
 ## Adding New Tools
 
@@ -62,15 +73,17 @@ pytest tests/ -v
 ## Project Structure
 
 ```
-├── server.py                    ← entry point
-├── config.py                    ← env vars (แก้ที่นี่ที่เดียว)
+├── server.py                          ← entry point
+├── config.py                          ← env vars (แก้ที่นี่ที่เดียว)
 ├── tools/
 │   ├── function_tools/
-│   │   └── image_utils.py       ← Type 1: Python logic tools
+│   │   ├── image_utils.py             ← image function tools
+│   │   └── math_utils.py             ← math function tools
 │   └── api_tools/
-│       ├── client.py            ← shared HTTP client (auth อยู่ตรงนี้)
-│       └── image_platform.py   ← Type 2: REST API wrapper tools
-├── tests/                       ← unit tests
+│       ├── client.py                  ← shared HTTP client (auth อยู่ตรงนี้)
+│       ├── image_platform.py          ← image REST API wrapper tools
+│       └── math_platform.py          ← math REST API wrapper tools
+├── tests/                             ← unit tests
 └── docs/
-    └── adding-tools-guide.md   ← how to add tools
+    └── adding-tools-guide.md         ← how to add tools
 ```

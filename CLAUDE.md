@@ -80,8 +80,10 @@ def register(mcp: FastMCP) -> None:
 | `server.py` | Creates `FastMCP` app, calls all `register()` functions — only wiring, no logic |
 | `config.py` | All env vars (`IMAGE_API_BASE_URL`, `IMAGE_API_KEY`, `TRANSPORT`, etc.) — single source of truth |
 | `tools/api_tools/client.py` | `get_client()` factory — the only place auth headers are set |
-| `tools/function_tools/image_utils.py` | Example function tools (`get_image_metadata`, `resize_image`) |
-| `tools/api_tools/image_platform.py` | Example API tools (`detect_objects`, `classify_image`) |
+| `tools/function_tools/image_utils.py` | Function tools: `get_image_metadata`, `resize_image` |
+| `tools/api_tools/image_platform.py` | API tools: `detect_objects`, `classify_image` |
+| `tools/function_tools/math_utils.py` | Function tools: `compound_interest`, `convert_units` |
+| `tools/api_tools/math_platform.py` | API tools: `calculate_statistics`, `amortize_loan` |
 
 ### Config
 
@@ -89,10 +91,11 @@ Settings are loaded from `.env` via `pydantic-settings`. `TRANSPORT` is `Literal
 
 ### Testing patterns
 
-- **Function tools**: mock `PIL.Image.open` with `unittest.mock.patch`
+- **Function tools**: import and call directly — no mocking needed unless using I/O (e.g. mock `PIL.Image.open` for image tools)
 - **API tools**: use `pytest-httpx`'s `HTTPXMock` fixture — mock by full URL (`http://localhost:8080/endpoint`)
 - `asyncio_mode = "auto"` in `pyproject.toml` — no need for `@pytest.mark.asyncio` decorators (though they still work)
 - Default `IMAGE_API_BASE_URL` is `http://localhost:8080` — match this in mock URLs
+- Test files: `test_function_tools.py`, `test_api_tools.py`, `test_math_function_tools.py`, `test_math_api_tools.py`
 
 ### Tool docstrings matter
 
